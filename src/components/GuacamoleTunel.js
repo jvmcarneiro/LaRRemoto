@@ -1,4 +1,4 @@
-﻿import Guacamole from 'guacamole-common-js';
+import Guacamole from 'guacamole-common-js';
 import React from 'react';
 import encrypt from '../encrypt/encrypt.js';
 
@@ -15,16 +15,15 @@ class GuacamoleStage extends React.Component {
         type: 'rdp',
         settings: {
           hostname: '192.168.110.229',
-          password: 'foo',
-          port: 5901
+          password: ''
         },
       },
     });
-    var port = '8080';
-    var host = window.location.hostname || 'localhost';
+    var port = '4822';
+    var host = window.location.hostname || '127.0.0.1';
     var wsprotocol = (window.location.protocol == 'https:') ? 'wss:' : 'ws:';
-
-    var tunnel = new Guacamole.WebSocketTunnel(wsprotocol + '//' + host + ':' + port + '/guacamole')
+    //wsprotocol + '//' + host + ':' + port + '/guacamole'
+    var tunnel = new Guacamole.WebSocketTunnel("ws?hostname=192.168.110.229&port=3389&width=1024&height=768&audio=audio/L16")
     var guac = this._client = new Guacamole.Client(tunnel);
     console.log('Created G token');
   }
@@ -39,9 +38,9 @@ class GuacamoleStage extends React.Component {
     console.log("G inserted into DOM and connected");
   }
 
-  componentWillUnmount() {
-    this._client.disconnect();
-  }
+  // componentWillUnmount() {
+  //   this._client.disconnect();
+  // }
 
   render() {
     return <div ref={this.myRef} id="display" />;
