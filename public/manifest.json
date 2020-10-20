@@ -1,21 +1,11 @@
 {
   "short_name": "LVR - LaR",
-  "name": "Laboratório Virtual Remoto de Robótica da UFBA",
+  "name": "Laboratï¿½rio Virtual Remoto de Robï¿½tica da UFBA",
   "icons": [
     {
       "src": "./lvr.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "64x64",
       "type": "image/x-icon"
-    },
-    {
-      "src": "../src/resources/images/Logo-Lar.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "../src/resources/images/Logo-Lar.png",
-      "type": "image/png",
-      "sizes": "512x512"
     }
   ],
   "start_url": ".",

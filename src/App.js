@@ -6,7 +6,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { NavigationBar } from './components/NavigationBar';
 import { Rodape } from './components/Rodape';
 import Sidebar from './components/Sidebar';
-//import { EnsureLoggedInContainer } from './containers/EnsureLoggedInContainer'
+import {Loading} from './components';
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import ProtectedRoute from "./auth/protected-route";
 
 import { Home } from './pages/Home';
 import { About } from './pages/About';
@@ -15,6 +17,7 @@ import { Experiments } from './pages/Experiments';
 import { Bibliography } from './pages/Bibliography';
 import { Remote } from './pages/Remote';
 import { UnderConstruction } from './pages/UnderConstruction';
+import Profile from './pages/Profile';
 import { NoMatch } from './pages/NoMatch';
 
 const items = [
@@ -44,7 +47,7 @@ const items = [
     name: 'settings',
     label: 'Configuracoes',
     items: [
-      { name: 'profile', label: 'Perfil', path: '/profile', component: { UnderConstruction } }
+      { name: 'profile', label: 'Perfil', path: '/profile', component: { Profile } }
     ],
   },
   {
@@ -55,54 +58,36 @@ const items = [
   }
 ]
 
-class App extends React.Component {
-  componentDidUpdate(prevProps) {
-    const { dispatch, redirectUrl } = this.props
-    const isLoggingOut = prevProps.isLoggedIn && !this.props.isLoggedIn
-    const isLoggingIn = !prevProps.isLoggedIn && this.props.isLoggedIn
+const App = () => {
+  const { isLoading } = useAuth0();
 
-    //if (isLoggingIn) {
-    //  dispatch(navigateTo(redirectUrl))
-    //} else if (isLoggingOut) {
-    //  // do any kind of cleanup or post-logout redirection here
-    //}
+  if (isLoading) {
+    return <Loading />;
   }
 
+  return (
 
+    <React.Fragment>
+      <Router>
+        <NavigationBar />
 
-  render() {
-    return (
+        <div style={{ display: "flex" }}>
+          <Sidebar items={items} />
 
-      <React.Fragment>
-        <Router>
-          <NavigationBar />
-
-          <div style={{ display: "flex" }}>
-            <Sidebar items={items} />
-
-            <Route exact path="/" component={Home} />
-            <Route path="/about" component={About} />
-
-            <Route path="/simulators" component={Simulators} />
-            <Route path="/experiments" component={UnderConstruction} />
-            <Route path="/bibliography" component={Bibliography} />
-            <Route path="/remote" component={Remote} />
-            <Route path="/underConstruction" component={UnderConstruction} />
-            <Route path="/profile" component={UnderConstruction} />
-
-          </div>
-          <Rodape />
-        </Router>
-      </React.Fragment>
-    );
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    isLoggedIn: state.loggedIn,
-    redirectUrl: state.redirectUrl
-  }
+          <Route exact path="/" component={Home} />
+          <Route path="/about" component={About} />
+          <Route path="/experiments" component={UnderConstruction} />
+          <Route path="/bibliography" component={Bibliography} />
+          <Route path="/underConstruction" component={UnderConstruction} />
+          
+          <ProtectedRoute path="/simulators" component={Simulators} />
+          <ProtectedRoute path="/profile" component={Profile} />
+          <ProtectedRoute path="/remote" component={Remote} />
+        </div>
+        <Rodape />
+      </Router>
+    </React.Fragment>
+  );
 }
 
 export default App
