@@ -18,3 +18,4 @@ Para ver o exemplo do Apache-Guacamole funcionando
 
 1. Executar os comandos listados no arquivo Docker-Apache.txt
 2. Conectar via http://localhost:8080/guacamole/
+3. Configurar a conexão RDP de acordo com: https://www.youtube.com/watch?v=UV-qbRSm5PU
