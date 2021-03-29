@@ -71,5 +71,4 @@ final:
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nginx
 ```
 Encontrados os IPs, basta substituir nos arquivos correspondentes indicados com
-comentário, e reiniciar os containers com `docker restart nginx` Para ver o
-exemplo do Apache-Guacamole funcionando
+comentário, e reiniciar os containers com `docker restart nginx`.
