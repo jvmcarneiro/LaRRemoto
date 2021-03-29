@@ -31,8 +31,8 @@ docker run --name mysql \
     -d mysql
 ```
 
-3. Substituir o valor do campo `server_name` no arquivo
-   `./conf/nginx/nginx.conf` pelo endereço do servidor de acesso
+3. Modificar o valor do campo `server_name` no arquivo
+   `./conf/nginx/nginx.conf` com o endereço do servidor de acesso
 
 4. Iniciar Nginx com certificados e config locais:
 ```bash
@@ -59,12 +59,11 @@ docker run --name guacamole \
 
 ## Habilitar SSL (opcional)
 Caso se deseje habilitar SSL com certificados locais, siga os seguintes passos
-após feita a instação acima:
+após feita a instalação acima:
 
 1. Pare e remova o container nginx:
 ```bash
-docker stop nginx
-docker rm nginx
+docker stop nginx; docker rm nginx
 ```
 
 2. Gere certificado e chave com:
@@ -77,7 +76,10 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./conf/nginx/ng
 sudo openssl dhparam -out ./conf/nginx/dhparam.pem 2048
 ```
 
-4. Inicie Nginx com certificados e config locais:
+4. Caso necessário modifique o valor do campo `server_name` no arquivo
+   `./conf/nginx/nginx_ssl.conf` com o endereço do servidor de acesso
+
+5. Inicie Nginx com certificados e configs locais:
 ```bash
 docker run --name nginx \
     -v $PWD/conf/nginx/nginx_ssl.conf:/etc/nginx/nginx.conf \
@@ -93,9 +95,10 @@ Erros ao tentar acessar a tela de login do Guacamole podem ocorrer caso os IPs
 dos containers estejam errados nos arquivos de configuração.  Os arquivos
 `./conf/nginx/nginx.conf` e `./conf/tomcat/server.xml` assumem os IPs dos
 containers `guacamole` e `nginx`, respectivamente, de acordo com sua ordem de
-inicialização, e podem ser diferentes em outros ambientes.  Para averiguar os
-devidos IPs basta rodar o comando abaixo, substuindo o container desejado ao
-final:
+inicialização, e podem ser diferentes em outros ambientes.
+
+Para averiguar os devidos IPs basta rodar o comando abaixo, substuindo o
+container desejado ao final:
 ```bash
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nginx
 ```
