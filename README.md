@@ -45,12 +45,12 @@ docker run --name nginx \
     -v $PWD/conf/nginx/private/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key \
     -d -p 443:443 nginx
 ```
-7. Iniciar container guacamole:
+7. Iniciar container Guacamole:
 ```bash
 docker run --name guacamole \
     -v $PWD/conf/tomcat/server.xml:/usr/local/tomcat/conf/server.xml \
     --link guacd:guacd                   \
-    --link sql:mysql                   \
+    --link mysql:mysql                   \
     -e MYSQL_DATABASE=guacamole_db       \
     -e MYSQL_USER=guacamole_user         \
     -e MYSQL_PASSWORD=guacamole_password \
@@ -68,8 +68,7 @@ inicialização, e podem ser diferentes em outros ambientes.  Para averiguar os
 devidos IPs basta rodar o comando abaixo, substuindo o container desejado ao
 final:
 ```bash
-docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
-nginx
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nginx
 ```
 Encontrados os IPs, basta substituir nos arquivos correspondentes indicados com
 comentário, e reiniciar os containers com `docker restart nginx` Para ver o
