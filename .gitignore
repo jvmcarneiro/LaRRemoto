@@ -26,5 +26,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # certs and keys
-/conf/nginx/certs
-/conf/nginx/private
+/conf/nginx/*.key
+/conf/nginx/*.crt
+/conf/nginx/*.pem
+

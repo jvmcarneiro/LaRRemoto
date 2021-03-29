@@ -3,18 +3,23 @@ Projeto do website para acesso aos conteúdos e servidores do Laboratorio
 Robótica - LaR da Escola Politécnica da UFBA.
 
 O servidor de experimentos é configurado para ser acessado remotamente via
-Apache Guacamole por VNC.
+Apache Guacamole por VNC, utilizando servidor de proxy reverso Nginx.
 
 ## Pré-requesitos
 Seguir os métodos de instalação recomendados para seu ambiente dos seguintes
 programas:
 - Docker Engine
-- Openssl
 - NPM
+- Openssl (opcional)
 
 ## Instalação
 A partir do diretório raiz do repositório:
-1. Iniciar guacd daemon: `docker run --name guacd -d guacamole/guacd`
+
+1. Iniciar guacd daemon:
+```bash
+docker run --name guacd -d guacamole/guacd
+```
+
 2. Criar database MySQL:
 ```bash
 docker run --name mysql \
@@ -25,27 +30,18 @@ docker run --name mysql \
     -e MYSQL_PASSWORD=guacamole_password  \
     -d mysql
 ```
+
 3. Substituir o valor do campo `server_name` no arquivo
    `./conf/nginx/nginx.conf` pelo endereço do servidor de acesso
-4. Gerar certificado e chave com:
-```bash
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./conf/nginx/private/nginx-selfsigned.key -out ./conf/nginx/certs/nginx-selfsigned.crt
-```
-5. Gerar grupo Diffie-Hellman para segurança na troca de chaves:
-```bash
-sudo openssl dhparam -out ./conf/nginx/certs/dhparam.pem 2048
-```
-6. Iniciar Nginx com certificados e config locais:
+
+4. Iniciar Nginx com certificados e config locais:
 ```bash
 docker run --name nginx \
     -v $PWD/conf/nginx/nginx.conf:/etc/nginx/nginx.conf \
-    -v $PWD/conf/nginx/ssl-redirect.conf:/etc/nginx/default.d/ssl-redirect.conf \
-    -v $PWD/conf/nginx/certs/dhparam.pem:/etc/ssl/certs/dhparam.pem \
-    -v $PWD/conf/nginx/certs/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt \
-    -v $PWD/conf/nginx/private/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key \
-    -d -p 443:443 nginx
+    -d -p 80:80 nginx
 ```
-7. Iniciar container Guacamole:
+
+5. Iniciar container Guacamole:
 ```bash
 docker run --name guacamole \
     -v $PWD/conf/tomcat/server.xml:/usr/local/tomcat/conf/server.xml \
@@ -56,8 +52,41 @@ docker run --name guacamole \
     -e MYSQL_PASSWORD=guacamole_password \
     -d -p 8080:8080 guacamole/guacamole
 ```
-8. Executar a linha de comando "npm install"
-9. Executar a linha de comando "npm start"
+
+6. Executar a linha de comando "npm install"
+
+7. Executar a linha de comando "npm start"
+
+## Habilitar SSL (opcional)
+Caso se deseje habilitar SSL com certificados locais, siga os seguintes passos
+após feita a instação acima:
+
+1. Pare e remova o container nginx:
+```bash
+docker stop nginx
+docker rm nginx
+```
+
+2. Gere certificado e chave com:
+```bash
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./conf/nginx/nginx-selfsigned.key -out ./conf/nginx/nginx-selfsigned.crt
+```
+
+3. Gere grupo Diffie-Hellman para segurança na troca de chaves:
+```bash
+sudo openssl dhparam -out ./conf/nginx/dhparam.pem 2048
+```
+
+4. Inicie Nginx com certificados e config locais:
+```bash
+docker run --name nginx \
+    -v $PWD/conf/nginx/nginx_ssl.conf:/etc/nginx/nginx.conf \
+    -v $PWD/conf/nginx/ssl-redirect.conf:/etc/nginx/default.d/ssl-redirect.conf \
+    -v $PWD/conf/nginx/dhparam.pem:/etc/ssl/certs/dhparam.pem \
+    -v $PWD/conf/nginx/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt \
+    -v $PWD/conf/nginx/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key \
+    -d -p 443:443 nginx
+```
 
 ## Solução de problemas
 Erros ao tentar acessar a tela de login do Guacamole podem ocorrer caso os IPs
