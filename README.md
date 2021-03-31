@@ -115,9 +115,9 @@ comentário, e reiniciar os containers com `docker restart nginx`.
 - [x] Refazer README
 - [x] Configurar servidor proxy reverso
 - [x] Alterar configurações padrão Guacamole
-- [ ] Consertar vulnerabilidades nas dependências do projeto
-- [ ] Remover oauth (autenticar somente pelo guacamole)
-- [ ] Criar link para a página de login do Guacamole
+- [x] Consertar vulnerabilidades nas dependências do projeto
+- [x] Remover oauth (autenticar somente pelo guacamole)
+- [x] Criar link para a página de login do Guacamole
 - [ ] Incluir instruções para servidor VNC
 - [ ] Incluir requisitos para transferência de arquivos SFTP
 - [ ] Configurar conexão e usuários VNC

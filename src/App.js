@@ -2,23 +2,17 @@ import React from 'react';
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route} from "react-router-dom";
 import { NavigationBar } from './components/NavigationBar';
-import { Rodape } from './components/Rodape';
 import Sidebar from './components/Sidebar';
-import {Loading} from './components';
-import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-import ProtectedRoute from "./auth/protected-route";
 
 import { Home } from './pages/Home';
 import { About } from './pages/About';
-import { Simulators } from './pages/Simulators';
+import { Server } from './pages/Server';
+import { Resources } from './pages/Resources';
 import { Experiments } from './pages/Experiments';
 import { Bibliography } from './pages/Bibliography';
-import { Remote } from './pages/Remote';
 import { UnderConstruction } from './pages/UnderConstruction';
-import Profile from './pages/Profile';
-import { NoMatch } from './pages/NoMatch';
 
 const items = [
   {
@@ -28,26 +22,14 @@ const items = [
     component: { Home }
   },
   {
-    name: 'virtual',
-    label: 'Virtual',
+    name: 'acesso',
+    label: 'Acesso',
+    path: '/',
     items: [
-      { name: 'simulators', label: 'Simuladores', path: '/simulators', component: { Simulators } },
+      { name: 'server', label: 'Servidor', path: '/server', component: { Server } },
+      { name: 'resources', label: 'Recursos', path: '/resources', component: { Resources } },
       { name: 'experiments', label: 'Experimentos', path: '/experiments', component: { Experiments } },
       { name: 'bibliography', label: 'Bibliografia', path: '/bibliography', component: { Bibliography } },
-    ],
-  },
-  {
-    name: 'remoto',
-    label: 'Remoto',
-    items: [
-      { name: 'remote', label: 'Acesso remoto', path: '/remote', component: { Remote } }
-    ],
-  },
-  {
-    name: 'settings',
-    label: 'Configuracoes',
-    items: [
-      { name: 'profile', label: 'Perfil', path: '/profile', component: { Profile } }
     ],
   },
   {
@@ -59,12 +41,6 @@ const items = [
 ]
 
 const App = () => {
-  const { isLoading } = useAuth0();
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
 
     <React.Fragment>
@@ -76,15 +52,12 @@ const App = () => {
 
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
-          <Route path="/experiments" component={UnderConstruction} />
+          <Route path="/experiments" component={Experiments} />
           <Route path="/bibliography" component={Bibliography} />
           <Route path="/underConstruction" component={UnderConstruction} />
-          
-          <ProtectedRoute path="/simulators" component={Simulators} />
-          <ProtectedRoute path="/profile" component={Profile} />
-          <ProtectedRoute path="/remote" component={Remote} />
+          <Route path="/resources" component={Resources} />
+          <Route path="/server" component={Server} />
         </div>
-        <Rodape />
       </Router>
     </React.Fragment>
   );

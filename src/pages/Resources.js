@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const UnderConstruction = () => (
+export const Resources = () => (
   <div class="Wrapper">
     <h2>Página em construção</h2>
     <p>Esse conteúdo ainda não está disponível.</p>

@@ -7,8 +7,8 @@ export class Home extends Component {
     return (
       <div class="Wrapper">
         <div style={{ textAlign: "center" }}>
-          <h1>Bem vindo ao laborat&oacute;rio virtual remoto de rob&oacute;tica!</h1>
-          <p>Para come&ccedil;ar, acesse pelo menu lateral os itens do laborat&oacute;rio virtual ou remoto</p>
+          <h1>Bem vindo ao Laboratório de Robótica!</h1>
+          <p>Para começar, navegue até a área desejada através do menu lateral.</p>
         </div>
       </div>
     );

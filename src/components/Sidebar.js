@@ -30,7 +30,7 @@ function SidebarItem({ depthStep = 10, depth = 0, expanded, item, ...rest }) {
     expandIcon = !collapsed ? (
       <ExpandLessIcon
         className={
-          "sidebar-item-expand-arrow" + " sidebar-item-expand-arrow-expanded"
+          "sidebar-item-expand-arrow sidebar-item-expand-arrow-expanded"
         }
       />
     ) : (
