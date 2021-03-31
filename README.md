@@ -12,7 +12,7 @@ programas:
 - NPM
 - Openssl (opcional)
 
-## Instalação
+## Instalação Servidor Guacamole
 A partir do diretório raiz do repositório:
 
 1. Iniciar guacd daemon:
@@ -20,10 +20,10 @@ A partir do diretório raiz do repositório:
 docker run --name guacd -d guacamole/guacd
 ```
 
-2. Criar database MySQL:
+2. Criar database MySQL (alterando senha de escolha):
 ```bash
 docker run --name mysql \
-    -v $PWD/conf/mysql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql \
+    -v "$(pwd)"/conf/mysql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql \
     -e MYSQL_ROOT_PASSWORD=root_password  \
     -e MYSQL_DATABASE=guacamole_db        \
     -e MYSQL_USER=guacamole_user          \
@@ -37,29 +37,30 @@ docker run --name mysql \
 4. Iniciar Nginx com certificados e config locais:
 ```bash
 docker run --name nginx \
-    -v $PWD/conf/nginx/nginx.conf:/etc/nginx/nginx.conf \
+    -v "$(pwd)"/conf/nginx/nginx.conf:/etc/nginx/nginx.conf \
     -d -p 80:80 nginx
 ```
+5. Caso deseje, alterar configurações padrão do guacemole e mysql via arquivo `./conf/guacamole/guacamole.properties` segundo [Capítulos 5 e 6 do Guacamole Manual](http://guacamole.incubator.apache.org/doc/gug/index.html)
 
-5. Iniciar container Guacamole:
+6. Iniciar container Guacamole (usando mesma senha usada na criação da database):
 ```bash
 docker run --name guacamole \
-    -v $PWD/conf/tomcat/server.xml:/usr/local/tomcat/conf/server.xml \
+    -v "$(pwd)"/conf/tomcat/server.xml:/usr/local/tomcat/conf/server.xml \
+    -v "$(pwd)"/conf/guacamole:/root/.custom_guacamole \
     --link guacd:guacd                   \
     --link mysql:mysql                   \
     -e MYSQL_DATABASE=guacamole_db       \
     -e MYSQL_USER=guacamole_user         \
     -e MYSQL_PASSWORD=guacamole_password \
+    -e GUACAMOLE_HOME=/root/.custom_guacamole \
     -d -p 8080:8080 guacamole/guacamole
 ```
 
-6. Executar a linha de comando "npm install"
+7. Mudar senha do usuário guacadmin padrão (via interface web ou database) e criar conexões e usuários
 
-7. Executar a linha de comando "npm start"
 
-## Habilitar SSL (opcional)
-Caso se deseje habilitar SSL com certificados locais, siga os seguintes passos
-após feita a instalação acima:
+## Habilitar SSL no Guacamole (opcional)
+Os passos abaixo instruem sobre a criação de certificados e chaves HTTPS locais (geram avisos nos browsers), mas caso se possuam certificados e chaves públicas basta substituí-los no passo 2.
 
 1. Pare e remova o container nginx:
 ```bash
@@ -82,13 +83,18 @@ sudo openssl dhparam -out ./conf/nginx/dhparam.pem 2048
 5. Inicie Nginx com certificados e configs locais:
 ```bash
 docker run --name nginx \
-    -v $PWD/conf/nginx/nginx_ssl.conf:/etc/nginx/nginx.conf \
-    -v $PWD/conf/nginx/ssl-redirect.conf:/etc/nginx/default.d/ssl-redirect.conf \
-    -v $PWD/conf/nginx/dhparam.pem:/etc/ssl/certs/dhparam.pem \
-    -v $PWD/conf/nginx/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt \
-    -v $PWD/conf/nginx/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key \
+    -v "$(pwd)"/conf/nginx/nginx_ssl.conf:/etc/nginx/nginx.conf \
+    -v "$(pwd)"/conf/nginx/ssl-redirect.conf:/etc/nginx/default.d/ssl-redirect.conf \
+    -v "$(pwd)"/conf/nginx/dhparam.pem:/etc/ssl/certs/dhparam.pem \
+    -v "$(pwd)"/conf/nginx/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt \
+    -v "$(pwd)"/conf/nginx/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key \
     -d -p 443:443 nginx
 ```
+
+É possível habilitar SSL entre o cliente guacamole e o serviço guacd, criando o arquivo `/etc/guacamole/guacd.conf` no container guacd, incluindo também certificado e chave.
+A database também pode ser configurada pra utilizar SSL.
+Instruções de configuração nos [Capítulos 5 e 6 do Guacamole Manual](http://guacamole.incubator.apache.org/doc/gug/index.html).
+
 
 ## Solução de problemas
 Erros ao tentar acessar a tela de login do Guacamole podem ocorrer caso os IPs
@@ -108,10 +114,12 @@ comentário, e reiniciar os containers com `docker restart nginx`.
 ## A fazer
 - [x] Refazer README
 - [x] Configurar servidor proxy reverso
-- [ ] Alterar configurações padrão Guacamole
+- [x] Alterar configurações padrão Guacamole
 - [ ] Consertar vulnerabilidades nas dependências do projeto
 - [ ] Remover oauth (autenticar somente pelo guacamole)
 - [ ] Criar link para a página de login do Guacamole
+- [ ] Incluir instruções para servidor VNC
+- [ ] Incluir requisitos para transferência de arquivos SFTP
 - [ ] Configurar conexão e usuários VNC
-- [ ] Iniciar produção
+- [ ] Preparar projeto para produção
 - [ ] Adaptar projeto para Docker Compose
