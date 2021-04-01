@@ -5,12 +5,14 @@ Robótica - LaR da Escola Politécnica da UFBA.
 O servidor de experimentos é configurado para ser acessado remotamente via
 Apache Guacamole por VNC, utilizando servidor de proxy reverso Nginx.
 
+
 ## Pré-requesitos
 Seguir os métodos de instalação recomendados para seu ambiente dos seguintes
 programas:
 - Docker Engine
 - NPM
 - Openssl (opcional)
+
 
 ## Instalação Servidor Guacamole
 A partir do diretório raiz do repositório:
@@ -98,11 +100,11 @@ Instruções de configuração nos [Capítulos 5 e 6 do Guacamole Manual](http:/
 
 ## Configuração do servidor público para deploy
 Este repositório não dará instruções diretas de deployment, pois cada caso terá necessidades específicas.
-O script `react-scripts build`, executado ao rodar `npm build`, já dá conta de todo processo de prototipagem, restando apenas a configuração do servidor de acesso.
+O script `react-scripts build`, executado após `npm install; npm run build`, já dá conta de todo processo de prototipagem, restando apenas a configuração do servidor de acesso.
 
 Para instruções gerais pode se consultar o [Create React App Deployment Guide](https://create-react-app.dev/docs/deployment/);
 
-E para instruções sobre configuração de um servidor local, o [How To Deploy a React Application with Nginx on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-react-application-with-nginx-on-ubuntu-20-04) deve ajudar.
+E para configuração de um servidor local, o [How To Deploy a React Application with Nginx on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-react-application-with-nginx-on-ubuntu-20-04) deve ajudar.
 
 
 ## Solução de problemas
@@ -119,6 +121,7 @@ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ngin
 ```
 Encontrados os IPs, basta substituir nos arquivos correspondentes indicados com
 comentário, e reiniciar os containers com `docker restart nginx`.
+
 
 ## A fazer
 - [x] Refazer README
