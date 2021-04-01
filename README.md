@@ -61,6 +61,18 @@ docker run --name guacamole \
 7. Mudar senha do usuário guacadmin padrão (via interface web ou database) e criar conexões e usuários
 
 
+## Deployment do site
+Este repositório não dará instruções diretas para deploy, pois cada caso terá necessidades específicas.
+O script `react-scripts build`, executado após `npm install; npm run build`, já dá conta de todo processo de prototipagem, restando apenas a configuração do servidor de acesso.
+
+Para instruções gerais pode se consultar o [Create React App Deployment Guide](https://create-react-app.dev/docs/deployment/);
+
+E para configuração de um servidor local, o [How To Deploy a React Application with Nginx on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-react-application-with-nginx-on-ubuntu-20-04) deve ajudar.
+
+Utilizando essa última abordagem, é possível configurar o servidor nginx utlizando o mesmo container docker que está servindo o guacamole.
+Para isso, basta fazer as modificações relevantes em `./conf/nginx/nginx.conf`, mudando a localização do parâmetro `root` para a pasta `build/` que deverá ser montada com um novo `docker run -v [...] nginx`. 
+
+
 ## Habilitar SSL no Guacamole (opcional)
 Os passos abaixo instruem sobre a criação de certificados e chaves HTTPS locais (geram avisos nos browsers), mas caso se possuam certificados e chaves públicas basta substituí-los no passo 2.
 
@@ -96,15 +108,6 @@ docker run --name nginx \
 É possível habilitar SSL entre o cliente guacamole e o serviço guacd, criando o arquivo `/etc/guacamole/guacd.conf` no container guacd, incluindo também certificado e chave.
 A database também pode ser configurada pra utilizar SSL.
 Instruções de configuração nos [Capítulos 5 e 6 do Guacamole Manual](http://guacamole.incubator.apache.org/doc/gug/index.html).
-
-
-## Configuração do servidor público para deploy
-Este repositório não dará instruções diretas de deployment, pois cada caso terá necessidades específicas.
-O script `react-scripts build`, executado após `npm install; npm run build`, já dá conta de todo processo de prototipagem, restando apenas a configuração do servidor de acesso.
-
-Para instruções gerais pode se consultar o [Create React App Deployment Guide](https://create-react-app.dev/docs/deployment/);
-
-E para configuração de um servidor local, o [How To Deploy a React Application with Nginx on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-react-application-with-nginx-on-ubuntu-20-04) deve ajudar.
 
 
 ## Solução de problemas
