@@ -96,6 +96,15 @@ A database também pode ser configurada pra utilizar SSL.
 Instruções de configuração nos [Capítulos 5 e 6 do Guacamole Manual](http://guacamole.incubator.apache.org/doc/gug/index.html).
 
 
+## Configuração do servidor público para deploy
+Este repositório não dará instruções diretas de deployment, pois cada caso terá necessidades específicas.
+O script `react-scripts build`, executado ao rodar `npm build`, já dá conta de todo processo de prototipagem, restando apenas a configuração do servidor de acesso.
+
+Para instruções gerais pode se consultar o [Create React App Deployment Guide](https://create-react-app.dev/docs/deployment/);
+
+E para instruções sobre configuração de um servidor local, o [How To Deploy a React Application with Nginx on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-react-application-with-nginx-on-ubuntu-20-04) deve ajudar.
+
+
 ## Solução de problemas
 Erros ao tentar acessar a tela de login do Guacamole podem ocorrer caso os IPs
 dos containers estejam errados nos arquivos de configuração.  Os arquivos
