@@ -36,7 +36,7 @@ docker run --name mysql \
 3. Modificar o valor do campo `server_name` no arquivo
    `./conf/nginx/nginx.conf` com o endereço do servidor de acesso
 
-4. Iniciar Nginx com certificados e config locais:
+4. Iniciar Nginx com config local:
 ```bash
 docker run --name nginx \
     -v "$(pwd)"/conf/nginx/nginx.conf:/etc/nginx/nginx.conf \
@@ -82,7 +82,7 @@ sudo openssl dhparam -out ./conf/nginx/dhparam.pem 2048
 4. Caso necessário modifique o valor do campo `server_name` no arquivo
    `./conf/nginx/nginx_ssl.conf` com o endereço do servidor de acesso
 
-5. Inicie Nginx com certificados e configs locais:
+5. Inicie Nginx com certificados:
 ```bash
 docker run --name nginx \
     -v "$(pwd)"/conf/nginx/nginx_ssl.conf:/etc/nginx/nginx.conf \
