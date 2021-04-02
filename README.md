@@ -55,7 +55,7 @@ docker run --name guacamole \
     -e MYSQL_USER=guacamole_user         \
     -e MYSQL_PASSWORD=guacamole_password \
     -e GUACAMOLE_HOME=/root/.custom_guacamole \
-    -d -p 8080:8080 guacamole/guacamole
+    -d guacamole/guacamole
 ```
 
 7. Mudar senha do usuário guacadmin padrão (via interface web ou database) e criar conexões e usuários
@@ -70,7 +70,7 @@ Para instruções gerais pode se consultar o [Create React App Deployment Guide]
 E para configuração de um servidor local, o [How To Deploy a React Application with Nginx on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-react-application-with-nginx-on-ubuntu-20-04) deve ajudar.
 
 Utilizando essa última abordagem, é possível configurar o servidor nginx utlizando o mesmo container docker que está servindo o guacamole.
-Para isso, basta fazer as modificações relevantes em `./conf/nginx/nginx.conf`, mudando a localização do parâmetro `root` para a pasta `build/` que deverá ser montada com um novo `docker run -v [...] nginx`. 
+Para isso, basta fazer as modificações relevantes em `./conf/nginx/nginx.conf`, mudando a localização do parâmetro `root` para a pasta `build/` que deverá ser montada com um novo `docker run -v [...] nginx`, após remover o container anterior. 
 
 
 ## Habilitar SSL no Guacamole (opcional)
