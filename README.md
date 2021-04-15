@@ -13,6 +13,11 @@ programas:
 - NPM
 - Openssl (opcional)
 
+Todas as instruções abaixo supõem execução dentro de cópia local do repositório. Para clonar e mudar o diretório:
+```bash
+git clone https://github.com/jvmcarneiro/LaRRemoto
+cd LaRRemoto
+```
 
 ## Instalação Servidor Guacamole
 A partir do diretório raiz do repositório:
@@ -95,6 +100,20 @@ docker run --name nginx \
 Esses passos são suficientes para deploy em um servidor acessível apenas por VPN, por exemplo, onde usuários sabem o IP local da máquina.
 
 
+## Instalação e configuração do servidor VNC
+Seguindo as recomendações na seção _Which VNC server?_ do [Capítulo 5 do Guacamole Manual](https://guacamole.apache.org/doc/gug/configuring-guacamole.html), escolha um servidor compatível com seu ambiente. Optamos pelo TigerVNC no Ubuntu seguindo os passos:
+
+1. Instalar o TigerVNC (utilizamos os binários genéricos da [release page](https://github.com/TigerVNC/tigervnc/releases) com [este guia](https://gist.github.com/plembo/87a429f3bd1f95d4ec59b2ce8ce0a04d) de referência, mas fazendo a instalação em `/usr/` ao invés de `/usr/local/` e pulando os passos 12 e 13)
+
+2. Instalar o ambiente gráfico de escolha (optamos por XFCE, instalando com `sudo apt install xfce4 xfce4-goodies`)
+
+3. Criar e configurar contas usuário para serem acessadas remotamente (seguimos [esta solução para usuários restritos](https://access.redhat.com/solutions/65822))
+
+4. Configurar o TigerVNC (seguimos [esta página da Arch Wiki](https://wiki.archlinux.org/index.php/TigerVNC), utilizando Xvnc para sessões sob demanda e adaptando algumas instruções para o Ubuntu)
+
+5. Criar usuários, grupos e conexões correspondentes no Guacamole pela conta administradora (basta seguir o [Capítulo 17 do Guacamole Manual](https://guacamole.apache.org/doc/gug/administration.html))
+
+
 ## Habilitar SSL no Guacamole (opcional)
 Os passos abaixo instruem sobre a criação de certificado e chave HTTPS locais (geram avisos nos browsers), mas caso já os possua basta substituí-los no passo 2.
 
@@ -160,3 +179,4 @@ comentário, e reiniciar os containers com `docker restart nginx`.
 - [ ] Configurar conexão e usuários VNC
 - [ ] Preparar projeto para produção
 - [ ] Adaptar projeto para Docker Compose
+
