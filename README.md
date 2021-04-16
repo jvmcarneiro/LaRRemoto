@@ -6,6 +6,8 @@ O servidor de experimentos é configurado para ser acessado remotamente via
 Apache Guacamole por VNC, utilizando servidor de proxy reverso Nginx.
 
 
+
+
 ## Pré-requesitos
 Seguir os métodos de instalação recomendados para seu ambiente dos seguintes
 programas:
@@ -15,9 +17,11 @@ programas:
 
 Todas as instruções abaixo supõem execução dentro de cópia local do repositório. Para clonar e mudar o diretório:
 ```bash
-git clone https://github.com/jvmcarneiro/LaRRemoto
+git clone https://github.com/jvmcarneiro/LaRRemoto \
 cd LaRRemoto
 ```
+
+
 
 ## Instalação Servidor Guacamole
 A partir do diretório raiz do repositório:
@@ -39,7 +43,7 @@ docker run --name mysql \
 ```
 
 3. Modificar o valor do campo `server_name` no arquivo
-   `conf/nginx/nginx.conf` com o endereço do servidor de acesso
+   `conf/nginx/nginx.conf` com o endereço do servidor de acesso.
 
 4. Iniciar Nginx com config local:
 ```bash
@@ -48,9 +52,9 @@ docker run --name nginx \
     -d -p 80:80 nginx
 ```
 
-5. Caso deseje, alterar configurações padrão do guacemole e mysql via arquivo `conf/guacamole/guacamole.properties` segundo [Capítulos 5 e 6 do Guacamole Manual](http://guacamole.incubator.apache.org/doc/gug/index.html)
+5. Caso deseje, alterar configurações padrão do guacemole e mysql via arquivo `conf/guacamole/guacamole.properties` segundo [Capítulos 5 e 6 do Guacamole Manual](http://guacamole.incubator.apache.org/doc/gug/index.html).
 
-6. Iniciar container Guacamole (usando mesma senha usada na criação da database):
+6. Iniciar container do servidor Guacamole (usando mesma senha usada na criação da database):
 ```bash
 docker run --name guacamole \
     -v "$(pwd)"/conf/tomcat/server.xml:/usr/local/tomcat/conf/server.xml \
@@ -64,7 +68,9 @@ docker run --name guacamole \
     -d guacamole/guacamole
 ```
 
-7. Mudar senha do usuário guacadmin padrão (via interface web ou database) e criar conexões e usuários
+7. Mudar a senha padrão no guacamole a partir do endereço definido no passo 3.
+
+
 
 
 ## Deployment do site
@@ -72,13 +78,13 @@ O script `react-scripts build`, executado com `npm install; npm run build` na pa
 
 Para instruções gerais de deploy pode ser consultado o [Create React App Deployment Guide](https://create-react-app.dev/docs/deployment/);
 
-Para configuração de um servidor local, o guia [How To Deploy a React Application with Nginx on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-react-application-with-nginx-on-ubuntu-20-04) instrui durante todo o processo.
+Para configuração de um servidor local, o guia [How To Deploy a React Application with Nginx on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-react-application-with-nginx-on-ubuntu-20-04) ajuda por todo o processo.
 
-Utilizando essa última abordagem, é possível configurar o servidor nginx utlizando o mesmo container docker que está servindo o guacamole. Para tal basta:
+Utilizando essa última abordagem, é possível configurar o servidor nginx utilizando o mesmo container docker que está servindo o guacamole. Para tal basta:
 
-1. Prototipar o projeto com `npm install; npm run build`, criando a pasta `build/` que pode ser deixada na raiz do repositório mesmo
+1. Prototipar o projeto com `npm install; npm run build`, criando a pasta `build/` que pode ser deixada na raiz do repositório.
 
-2. Incluir em `conf/nginx/nginx.conf` dentro do campo `server` o parâmetro `root` apontando para a localização da pasta `build/` dentro do container (definida no passo 4) :
+2. Incluir em `conf/nginx/nginx.conf`, dentro do campo _server_, o parâmetro _root_ apontando para a localização da pasta `build/` dentro do container (localização definida no passo 4 a seguir) :
 ```bash
 root /etc/nginx/build;
 index index.html index.htm;
@@ -93,25 +99,59 @@ docker stop nginx; docker rm nginx
 ```bash
 docker run --name nginx \
     -v "$(pwd)"/conf/nginx/nginx.conf:/etc/nginx/nginx.conf \
-    -v "$(pwd)"/build:/etc/nginx/build
+    -v "$(pwd)"/build:/etc/nginx/build \
     -d -p 80:80 nginx
 ```
 
 Esses passos são suficientes para deploy em um servidor acessível apenas por VPN, por exemplo, onde usuários sabem o IP local da máquina.
 
 
+
+
 ## Instalação e configuração do servidor VNC
-Seguindo as recomendações na seção _Which VNC server?_ do [Capítulo 5 do Guacamole Manual](https://guacamole.apache.org/doc/gug/configuring-guacamole.html), escolha um servidor compatível com seu ambiente. Optamos pelo TigerVNC no Ubuntu seguindo os passos:
+Seguindo as recomendações na seção _Which VNC server?_ do [Capítulo 5 do Guacamole Manual](https://guacamole.apache.org/doc/gug/configuring-guacamole.html), escolha um servidor compatível com seu ambiente. Optamos pelo TigerVNC no Ubuntu utilizando as referências [Install tigervnc on Ubuntu](https://gist.github.com/plembo/87a429f3bd1f95d4ec59b2ce8ce0a04d) e [TigerVNC - Arch Wiki](https://wiki.archlinux.org/index.php/TigerVNC) pelos seguintes passos:
 
-1. Instalar o TigerVNC (utilizamos os binários genéricos da [release page](https://github.com/TigerVNC/tigervnc/releases) com [este guia](https://gist.github.com/plembo/87a429f3bd1f95d4ec59b2ce8ce0a04d) de referência, mas fazendo a instalação em `/usr/` ao invés de `/usr/local/` e pulando os passos 12 e 13)
+1. Baixar os binários TigerVNC pela [release page](https://github.com/TigerVNC/tigervnc/releases) e extrair arquivos com:
+```bash
+tar xzf tigervnc-*.tar.gz
+```
 
-2. Instalar o ambiente gráfico de escolha (optamos por XFCE, instalando com `sudo apt install xfce4 xfce4-goodies`)
+2. Alterar permissões:
+```bash
+cd tigervnc-* \
+sudo chown -R root:root usr
+```
 
-3. Criar e configurar contas usuário para serem acessadas remotamente (seguimos [esta solução para usuários restritos](https://access.redhat.com/solutions/65822))
+3. Copiar binários para as pastas do sistema:
+```bash
+sudo tar czf usr.tgz usr \
+sudo tar xzkf usr.tgz -C /
+```
 
-4. Configurar o TigerVNC (seguimos [esta página da Arch Wiki](https://wiki.archlinux.org/index.php/TigerVNC), utilizando Xvnc para sessões sob demanda e adaptando algumas instruções para o Ubuntu)
+4. Instalar o ambiente gráfico de escolha (optamos por XFCE, instalando com `sudo apt install xfce4 xfce4-goodies`).
 
-5. Criar usuários, grupos e conexões correspondentes no Guacamole pela conta administradora (basta seguir o [Capítulo 17 do Guacamole Manual](https://guacamole.apache.org/doc/gug/administration.html))
+5. Criar senha do servidor VNC com `vncpasswd`.
+
+6. Criar e configurar usuários, com desktops e permissões desejados, para serem acessadas remotamente (seguimos [esta solução para criação de usuários restritos](https://access.redhat.com/solutions/65822)).
+
+7. Incluir no arquivo `/usr/etc/tigervnc/vncserver.users` mapeamentos de usuários e portas VNC. Por exemplo, para incluir o usuário _fulano_ na porta 5901 adicionamos a linha `:1=fulano`ao arquivo.
+
+8. Criar o arquivo `~/.vnc/config` com configurações mínimas do servidor:
+```bash
+session=xfce
+geometry=1024x768
+alwaysshared
+```
+
+9. Iniciar e (opcionalmente) habilitar servidor para cada usuário desejado segundo mapeamento no passo 7:
+```bash
+sudo systemctl start vncserver@:1 \
+sudo systemctl enable vncserver@:1
+```
+
+10. Configurar conexões e usuários via Guacamole (instalado anteriormente). Para configuração mínima de conexão, basta preencher os campos _Hostname_ (endereço do servidor VNC) e porta referente ao usuário desejado (5901 para _fulano_, segundo exemplo acima). A senha do servidor pode ser preenchida no campo _Autentication_ ou deixada em branco para ser pedida toda vez que for feita a conexão.
+
+
 
 
 ## Habilitar SSL no Guacamole (opcional)
@@ -151,6 +191,8 @@ A database também pode ser configurada para utilizar SSL.
 Instruções de configuração nos [Capítulos 5 e 6 do Guacamole Manual](http://guacamole.incubator.apache.org/doc/gug/index.html).
 
 
+
+
 ## Solução de problemas
 Erros ao tentar acessar a tela de login do Guacamole podem ocorrer caso os IPs
 dos containers estejam errados nos arquivos de configuração.  Os arquivos
@@ -167,16 +209,17 @@ Encontrados os IPs, basta substituir nos arquivos correspondentes indicados com
 comentário, e reiniciar os containers com `docker restart nginx`.
 
 
-## A fazer
+
+
+## Marcos do projeto
 - [x] Refazer README
 - [x] Configurar servidor proxy reverso
 - [x] Alterar configurações padrão Guacamole
 - [x] Consertar vulnerabilidades nas dependências do projeto
 - [x] Remover oauth (autenticar somente pelo guacamole)
 - [x] Criar link para a página de login do Guacamole
-- [ ] Incluir instruções para servidor VNC
+- [x] Incluir configuração do servidor VNC
 - [ ] Incluir requisitos para transferência de arquivos SFTP
-- [ ] Configurar conexão e usuários VNC
-- [ ] Preparar projeto para produção
+- [ ] Testar e incluir instruções para VNC por XDMCP
 - [ ] Adaptar projeto para Docker Compose
 
