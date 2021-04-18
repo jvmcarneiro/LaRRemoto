@@ -130,26 +130,30 @@ sudo tar xzkf usr.tgz -C /
 
 4. Instalar o ambiente gráfico de escolha (optamos por XFCE, instalando com `sudo apt install xfce4 xfce4-goodies`).
 
-5. Criar senha do servidor VNC com `vncpasswd`.
+5. Criar e configurar usuários linux, com desktops e permissões desejados, para serem acessadas remotamente.
 
-6. Criar e configurar usuários, com desktops e permissões desejados, para serem acessadas remotamente (seguimos [esta solução para criação de usuários restritos](https://access.redhat.com/solutions/65822)).
-
-7. Incluir no arquivo `/usr/etc/tigervnc/vncserver.users` mapeamentos de usuários e portas VNC. Por exemplo, para incluir o usuário _fulano_ na porta 5901 adicionamos a linha `:1=fulano`ao arquivo.
-
-8. Criar o arquivo `~/.vnc/config` com configurações mínimas do servidor:
+6. Criar o arquivo `~/.vnc/config` com configurações mínimas do servidor:
 ```bash
 session=xfce
 geometry=1024x768
 alwaysshared
 ```
 
-9. Iniciar e (opcionalmente) habilitar servidor para cada usuário desejado segundo mapeamento no passo 7:
+7. Criar senha do servidor VNC com o comando `vncpasswd` utilizando o usuário no qual deseja ser feita a conexão.
+
+8. Incluir no arquivo `/usr/etc/tigervnc/vncserver.users` mapeamentos de usuários e portas VNC. Por exemplo, para incluir o usuário _fulano_ na porta 5901 adicionamos a linha `:1=fulano`ao arquivo.
+
+9. Iniciar e (opcionalmente) habilitar servidor para cada porta associada ao usuário desejado, segundo mapeamento no passo 8:
 ```bash
 sudo systemctl start vncserver@:1 \
 sudo systemctl enable vncserver@:1
 ```
 
-10. Configurar conexões e usuários via Guacamole (instalado anteriormente). Para configuração mínima de conexão, basta preencher os campos _Hostname_ (endereço do servidor VNC) e porta referente ao usuário desejado (5901 para _fulano_, segundo exemplo acima). A senha do servidor pode ser preenchida no campo _Autentication_ ou deixada em branco para ser pedida toda vez que for feita a conexão.
+10. Configurar conexões e usuários via guacamole (instalado anteriormente). Para configuração mínima de conexão, basta preencher os campos _Hostname_ (endereço do servidor VNC) e porta referente ao usuário desejado (5901 para _fulano_, segundo exemplo acima). A senha do servidor (gerada no passo 7) pode ser preenchida no campo _Autentication_ ou deixada em branco para ser requisitada toda vez que for feita uma conexão.
+
+11. Repetir os passos 8 a 10 para cada nova sessão desejada, incluindo os passos 6 e 7 para usuários linux sem conexões prévias. Conexões distintas, mesmo que sobre um mesmo usuário linux, gerarão sessões distintas (cada conexão vê um desktop próprio). Porém, caso usuários guacamole acessem a mesma conexão, eles irão interagir entre si na mesma sessão (verão a mesma tela, por exemplo).
+
+Uma configuração VNC com XDMCP cria sessões dinamicamente, e evitaria a necessidade de criação antecipada de um serviço para cada sessão desejada. Essa configuração, porém, ainda não foi testada no projeto.
 
 
 
@@ -219,7 +223,5 @@ comentário, e reiniciar os containers com `docker restart nginx`.
 - [x] Remover oauth (autenticar somente pelo guacamole)
 - [x] Criar link para a página de login do Guacamole
 - [x] Incluir configuração do servidor VNC
-- [ ] Incluir requisitos para transferência de arquivos SFTP
 - [ ] Testar e incluir instruções para VNC por XDMCP
 - [ ] Adaptar projeto para Docker Compose
-
