@@ -1,6 +1,6 @@
-# LaRRemoto
+# lar-remoto
 Projeto do website para acesso aos conteúdos e servidores do Laboratorio
-Robótica - LaR da Escola Politécnica da UFBA.
+Robótica (LaR) da Escola Politécnica da UFBA.
 
 O servidor de experimentos é configurado para ser acessado remotamente via
 Apache Guacamole por VNC, utilizando servidor de proxy reverso Nginx.
