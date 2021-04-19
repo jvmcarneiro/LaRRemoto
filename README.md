@@ -17,8 +17,8 @@ ferramentas:
 
 Todas as instruções abaixo supõem execução dentro de cópia local do repositório. Para clonar e mudar o diretório:
 ```bash
-git clone https://github.com/jvmcarneiro/LaRRemoto \
-cd LaRRemoto
+git clone https://github.com/jvmcarneiro/lar-remoto \
+cd lar-remoto
 ```
 
 
