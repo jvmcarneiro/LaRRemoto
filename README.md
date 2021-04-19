@@ -9,8 +9,8 @@ Apache Guacamole por VNC, utilizando servidor de proxy reverso Nginx.
 
 
 ## Pré-requesitos
-Seguir os métodos de instalação recomendados para seu ambiente dos seguintes
-programas:
+Seguir os métodos de instalação recomendados para seu ambiente das seguintes
+ferramentas:
 - Docker Engine
 - NPM
 - Openssl (opcional)
