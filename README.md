@@ -25,35 +25,35 @@ Todas as instruções abaixo supõem execução dentro de cópia local do reposi
 Para clonar e mudar o diretório:
 
 ```bash
-git clone https://github.com/jvmcarneiro/lar-remoto ;
+git clone https://github.com/jvmcarneiro/lar-remoto
 cd lar-remoto
 ```
 
 ## Instalação do Servidor Guacamole
 
-É possível alterar as configurações do guacamole nos arquivos da pastas `conf/`
+É possível alterar as configurações do Guacamole nos arquivos da pastas `conf/`
 (habilitar SSL, por exemplo) e do site na pasta `src/`, assim como as opções do
-docker-compose no arquivo `compose.yaml`, antes de executar os comandos a
+Docker Compose no arquivo `compose.yaml`, antes de executar os comandos a
 seguir.
 
 1. Prototipar site com:
 
     ```bash
-    npm install;
+    npm install
     npm run build
     ```
 
-2. Instalar e rodar containers docker para o guacamole com:
+2. Instalar e rodar containers Docker para o Guacamole com:
 
     ```bash
     docker-compose up -d
     ```
 
    Pode ser necessário executar o comando com `sudo`, caso o usuário não esteja
-   no grupo docker. Instruções de como executar docker sem root
+   no grupo docker. Instruções de como executar o comando `docker` sem root
    [aqui](https://docs.docker.com/engine/install/linux-postinstall/).
 
-3. Habilitar serviços dos containers docker (podem já estar habilitados por padrão):
+3. Habilitar serviços dos containers Docker (podem já estar habilitados por padrão):
 
     ```bash
     sudo systemctl enable docker.service
@@ -80,14 +80,14 @@ conexão feita por Xvnc e XDMCP através dos seguintes passos:
 2. Alterar permissões:
 
     ```bash
-    cd tigervnc-* ;
+    cd tigervnc-*
     sudo chown -R root:root usr
     ```
 
 3. Copiar binários para as pastas do sistema:
 
     ```bash
-    sudo tar czf usr.tgz usr ;
+    sudo tar czf usr.tgz usr
     sudo tar xzkf usr.tgz -C /
     ```
 
@@ -151,7 +151,7 @@ conexão feita por Xvnc e XDMCP através dos seguintes passos:
 10. Iniciar e habilitar o servidor VNC com:
 
     ```bash
-    sudo systemctl start xvnc.socket ;
+    sudo systemctl start xvnc.socket
     sudo systemctl enable xvnc.socket
     ```
 
@@ -164,7 +164,7 @@ conexão feita por Xvnc e XDMCP através dos seguintes passos:
 ## Solução de problemas
 
 Erros ao tentar acessar a tela de login do Guacamole podem ocorrer caso os IPs
-dos containers docker estejam errados nos arquivos de configuração.  Os
+dos containers Docker estejam errados nos arquivos de configuração.  Os
 arquivos `conf/nginx/nginx.conf` e `conf/tomcat/server.xml` assumem os IPs dos
 containers `guacamole` e `nginx`, respectivamente, de acordo com suas
 especificações no arquivo `compose.yaml`. Caso esteja havendo algum conflito,
@@ -183,7 +183,7 @@ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ngin
 - [x] Configurar servidor proxy reverso
 - [x] Alterar configurações padrão Guacamole
 - [x] Consertar vulnerabilidades nas dependências do projeto
-- [x] Remover oauth (autenticar somente pelo guacamole)
+- [x] Remover oauth (autenticar somente pelo Guacamole)
 - [x] Criar link para a página de login do Guacamole
 - [x] Incluir configuração do servidor VNC
 - [x] Testar e incluir instruções para VNC por XDMCP
