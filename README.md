@@ -18,7 +18,6 @@ Seguir os métodos de instalação recomendados para seu ambiente das seguintes
 ferramentas:
 
 - Docker Engine
-- Docker Compose
 - NPM
 
 Todas as instruções abaixo supõem execução dentro de cópia local do repositório.
@@ -32,9 +31,7 @@ cd lar-remoto
 ## Instalação do Servidor Guacamole
 
 É possível alterar as configurações do Guacamole nos arquivos da pastas `conf/`
-(habilitar SSL, por exemplo) e do site na pasta `src/`, assim como as opções do
-Docker Compose no arquivo `compose.yaml`, antes de executar os comandos a
-seguir.
+(habilitar SSL, por exemplo) e do site na pasta `src/`.
 
 1. Prototipar site com:
 
@@ -43,22 +40,67 @@ seguir.
     npm run build
     ```
 
-2. Instalar e rodar containers Docker para o Guacamole com:
+2. Iniciar guacd daemon:
 
     ```bash
-    docker-compose up -d
+    docker run --name guacd \
+      -v /home/mark1/Videos/guacamole:/record:rw
+      -d guacamole/guacd
     ```
 
-   Pode ser necessário executar o comando com `sudo`, caso o usuário não esteja
-   no grupo docker. Instruções de como executar o comando `docker` sem root
-   [aqui](https://docs.docker.com/engine/install/linux-postinstall/).
+3. Criar database MySQL (alterando senha de escolha):
 
-3. Habilitar serviços dos containers Docker (podem já estar habilitados por padrão):
+    ```bash
+    docker run --name mysql \
+      -v "$(pwd)"/conf/mysql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql \
+      -e MYSQL_ROOT_PASSWORD=root_password  \
+      -e MYSQL_DATABASE=guacamole_db        \
+      -e MYSQL_USER=guacamole_user          \
+      -e MYSQL_PASSWORD=guacamole_password  \
+      -d mysql
+    ```
+
+4. Modificar o valor do campo `server_name` no arquivo
+   `conf/nginx/nginx.conf` com o endereço do servidor de acesso.
+
+5. Iniciar Nginx com config local:
+
+    ```bash
+    docker run --name nginx \
+        -v "$(pwd)"/conf/nginx/nginx.conf:/etc/nginx/nginx.conf \
+        -v "$(pwd)"/build:/etc/nginx/build 
+        -d -p 80:80 nginx
+    ```
+
+6. Caso deseje, alterar configurações padrão do guacamole e mysql via arquivo
+   `conf/guacamole/guacamole.properties` segundo [Capítulos 5 e 6 do Guacamole
+   Manual](http://guacamole.incubator.apache.org/doc/gug/index.html).
+
+7. Iniciar container do servidor Guacamole (usando mesma senha usada na criação
+   da database):
+
+    ```bash
+    docker run --name guacamole \
+      -v "$(pwd)"/conf/tomcat/server.xml:/usr/local/tomcat/conf/server.xml \
+      -v "$(pwd)"/conf/guacamole:/root/.custom_guacamole \
+      --link guacd:guacd                   \
+      --link mysql:mysql                   \
+      -e MYSQL_DATABASE=guacamole_db       \
+      -e MYSQL_USER=guacamole_user         \
+      -e MYSQL_PASSWORD=guacamole_password \
+      -e GUACAMOLE_HOME=/root/.custom_guacamole \
+      -d guacamole/guacamole
+    ```
+
+8. Habilitar serviços Docker (podem já estar habilitados por padrão):
 
     ```bash
     sudo systemctl enable docker.service
     sudo systemctl enable containerd.service
     ```
+
+9. Mudar a senha padrão no Guacamole a partir do endereço definido no passo 3.
+
 
 ## Instalação e configuração do servidor VNC
 
@@ -166,8 +208,7 @@ conexão feita por Xvnc e XDMCP através dos seguintes passos:
 Erros ao tentar acessar a tela de login do Guacamole podem ocorrer caso os IPs
 dos containers Docker estejam errados nos arquivos de configuração.  Os
 arquivos `conf/nginx/nginx.conf` e `conf/tomcat/server.xml` assumem os IPs dos
-containers `guacamole` e `nginx`, respectivamente, de acordo com suas
-especificações no arquivo `compose.yaml`. Caso esteja havendo algum conflito,
+containers `guacamole` e `nginx`, respectivamente, de acordo com a ordem em que cada um é iniciado. Caso esteja havendo algum conflito,
 basta alterar os IPs nestes três arquivos e reiniciar os containers.
 
 Para averiguar os devidos IPs basta rodar o comando abaixo, substituindo o
