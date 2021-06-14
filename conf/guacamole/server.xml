@@ -168,7 +168,7 @@
 
         <!-- IP do container nginx no campo internalProxies -->
         <Valve className="org.apache.catalina.valves.RemoteIpValve"
-               internalProxies="10.5.0.4"
+               internalProxies="172.17.0.4"
                remoteIpHeader="x-forwarded-for"
                remoteIpProxiesHeader="x-forwarded-by"
                protocolHeader="x-forwarded-proto" />
