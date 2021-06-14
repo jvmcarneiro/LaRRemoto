@@ -44,7 +44,7 @@ cd lar-remoto
 
     ```bash
     docker run --name guacd \
-      -v /home/mark1/Videos/guacamole:/record:rw
+      -v /home/mark1/Videos/guacamole:/record:rw \
       -d guacamole/guacd
     ```
 
@@ -68,7 +68,7 @@ cd lar-remoto
     ```bash
     docker run --name nginx \
         -v "$(pwd)"/conf/nginx/nginx.conf:/etc/nginx/nginx.conf \
-        -v "$(pwd)"/build:/etc/nginx/build 
+        -v "$(pwd)"/build:/etc/nginx/build \
         -d -p 80:80 nginx
     ```
 
