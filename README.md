@@ -13,9 +13,16 @@ Guacamole a serem rodados apenas localmente, sem grandes requisitos de
 segurança. As instruções foram desenvolvidas com Ubuntu Linux em mente.
 
 ## Screenshots 
+Tela inicial do site:
 ![Tela Inicial do site.](screenshots/lar-inicio.jpg?raw=true "Tela Inicial do site.")
+
+Autenticação Guacamole:
 ![Autenticação Guacamole.](screenshots/guacamole-login.jpg?raw=true "Autenticação Guacamole.")
+
+Conexões disponíveis no Guacamole:
 ![Conexões disponíveis no Guacamole.](screenshots/guacamole-connections.jpg?raw=true "Conexões disponíveis no Guacamole.")
+
+Exemplo de sessão remota:
 ![Exemplo de sessão remota.](screenshots/guacamole-session.jpg?raw=true "Exemplo de sessão remota.")
 
 ## Pré-requisitos
