@@ -12,6 +12,12 @@ Abaixo estão as instruções de instalação básica para criação do site e s
 Guacamole a serem rodados apenas localmente, sem grandes requisitos de
 segurança. As instruções foram desenvolvidas com Ubuntu Linux em mente.
 
+## Screenshots 
+![Tela Inicial do site.](screenshots/lar-inicio.jpg?raw=true "Tela Inicial do site.")
+![Autenticação Guacamole.](screenshots/guacamole-login.jpg?raw=true "Autenticação Guacamole.")
+![Conexões disponíveis no Guacamole.](screenshots/guacamole-connections.jpg?raw=true "Conexões disponíveis no Guacamole.")
+![Exemplo de sessão remota.](screenshots/guacamole-session.jpg?raw=true "Exemplo de sessão remota.")
+
 ## Pré-requisitos
 
 Seguir os métodos de instalação recomendados para seu ambiente das seguintes
@@ -197,8 +203,8 @@ conexão feita por Xvnc e XDMCP através dos seguintes passos:
     sudo systemctl enable xvnc.socket
     ```
 
-11. Configurar conexões e usuários do Guacamole via *[ENDEREÇO DO
-    SITE]/guacamole/* configurado anteriormente. Para configuração mínima
+11. Criar conexões e usuários do Guacamole via *[ENDEREÇO DO
+    SITE]/guacamole/* implementado anteriormente. Para configuração mínima
     de conexão, basta preencher os campos _Hostname_ (endereço de onde o
     servidor VNC está hospedado) e porta (5900 é a porta padrão VNC,
     configurada no passo 8).
@@ -209,7 +215,7 @@ Erros ao tentar acessar a tela de login do Guacamole podem ocorrer caso os IPs
 dos containers Docker estejam errados nos arquivos de configuração.  Os
 arquivos `conf/nginx/nginx.conf` e `conf/tomcat/server.xml` assumem os IPs dos
 containers `guacamole` e `nginx`, respectivamente, de acordo com a ordem em que cada um é iniciado. Caso esteja havendo algum conflito,
-basta alterar os IPs nestes três arquivos e reiniciar os containers.
+basta alterar os IPs nesses arquivos e reiniciar os containers.
 
 Para averiguar os devidos IPs basta rodar o comando abaixo, substituindo o
 container desejado ao final:
@@ -228,4 +234,3 @@ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ngin
 - [x] Criar link para a página de login do Guacamole
 - [x] Incluir configuração do servidor VNC
 - [x] Testar e incluir instruções para VNC por XDMCP
-- [x] Adaptar projeto para Docker Compose
