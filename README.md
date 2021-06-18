@@ -22,7 +22,7 @@ Autenticação Guacamole:
 Conexões disponíveis no Guacamole:
 ![Conexões disponíveis no Guacamole.](screenshots/guacamole-connections.jpg?raw=true "Conexões disponíveis no Guacamole.")
 
-Exemplo de sessão remota:
+Exemplo de sessão remota dentro do navegador web:
 ![Exemplo de sessão remota.](screenshots/guacamole-session.jpg?raw=true "Exemplo de sessão remota.")
 
 ## Pré-requisitos
