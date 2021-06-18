@@ -16,12 +16,6 @@ segurança. As instruções foram desenvolvidas com Ubuntu Linux em mente.
 Tela inicial do site:
 ![Tela Inicial do site.](screenshots/lar-inicio.jpg?raw=true "Tela Inicial do site.")
 
-Autenticação Guacamole:
-![Autenticação Guacamole.](screenshots/guacamole-login.jpg?raw=true "Autenticação Guacamole.")
-
-Conexões disponíveis no Guacamole:
-![Conexões disponíveis no Guacamole.](screenshots/guacamole-connections.jpg?raw=true "Conexões disponíveis no Guacamole.")
-
 Exemplo de sessão remota dentro do navegador web:
 ![Exemplo de sessão remota.](screenshots/guacamole-session.jpg?raw=true "Exemplo de sessão remota.")
 
