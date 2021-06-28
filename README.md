@@ -8,6 +8,9 @@ do laboratório, com o acesso dos estudantes e pesquisadores aos arquivos e
 programas locais do LaR feito remotamente por VNC, via Apache Guacamole,
 diretamente pelo website.
 
+Manuais de utilização das soluções desenvolvidas no repositório estão presentes
+na pasta `manual/`.
+
 Abaixo estão as instruções de instalação básica para criação do site e servidor
 Guacamole a serem rodados apenas localmente, sem grandes requisitos de
 segurança. As instruções foram desenvolvidas com Ubuntu Linux em mente.
