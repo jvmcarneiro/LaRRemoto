@@ -55,8 +55,8 @@ cd lar-remoto
     ```bash
     docker run --name guacd \
       -v /home/mark1/Videos/guacamole:/record:rw \
-      -d guacamole/guac     \
-      --restart always
+      --restart always      \
+      -d guacamole/guac 
     ```
 
 3. Criar database MySQL (alterando senha de escolha):
@@ -68,8 +68,8 @@ cd lar-remoto
       -e MYSQL_DATABASE=guacamole_db        \
       -e MYSQL_USER=guacamole_user          \
       -e MYSQL_PASSWORD=guacamole_password  \
-      -d mysql                              \
-      --restart always
+      --restart always                      \
+      -d -p 3306:3306 mysql
     ```
 
 4. Modificar o valor do campo `server_name` no arquivo
@@ -81,8 +81,8 @@ cd lar-remoto
     docker run --name nginx \
         -v "$(pwd)"/conf/nginx/nginx.conf:/etc/nginx/nginx.conf \
         -v "$(pwd)"/build:/etc/nginx/build \
-        -d -p 80:80 nginx                  \
-        --restart always
+        --restart always    \
+        -d -p 80:80 nginx
     ```
 
 6. Caso deseje, alterar configurações padrão do guacamole e mysql via arquivo
@@ -102,8 +102,8 @@ cd lar-remoto
       -e MYSQL_USER=guacamole_user         \
       -e MYSQL_PASSWORD=guacamole_password \
       -e GUACAMOLE_HOME=/root/.custom_guacamole \
-      -d guacamole/guacamole               \
-      --restart always
+      --restart always                     \
+      -d guacamole/guacamole
     ```
 
 8. Habilitar serviços Docker (podem já estar habilitados por padrão):
