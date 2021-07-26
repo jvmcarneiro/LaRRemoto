@@ -1,10 +1,16 @@
 import React from 'react';
 import './App.css';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { BrowserRouter as Router, Route} from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
+
+import useToken from './useToken';
+
 import { NavigationBar } from './components/NavigationBar';
 import Sidebar from './components/Sidebar';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+import Preferences from './components/Preferences';
 
 import { Home } from './pages/Home';
 import { About } from './pages/About';
@@ -21,10 +27,9 @@ const items = [
     path: '/',
     component: { Home }
   },
-  {
-    name: 'acesso',
+  { name: 'acesso',
     label: 'Acesso',
-    path: '/',
+    path: '',
     items: [
       { name: 'server', label: 'Servidor', path: '/server', component: { Server } },
       { name: 'resources', label: 'Recursos', path: '/resources', component: { Resources } },
@@ -41,15 +46,18 @@ const items = [
 ]
 
 const App = () => {
+  const { token, setToken } = useToken();
+
+  if(!token) {
+    return <Login setToken={setToken} />
+  }
+
   return (
-
-    <React.Fragment>
-      <Router>
-        <NavigationBar />
-
+    <>
+      <BrowserRouter>
+      <NavigationBar />
         <div style={{ display: "flex" }}>
           <Sidebar items={items} />
-
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
           <Route path="/experiments" component={Experiments} />
@@ -57,9 +65,11 @@ const App = () => {
           <Route path="/underConstruction" component={UnderConstruction} />
           <Route path="/resources" component={Resources} />
           <Route path="/server" component={Server} />
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/preferences" component={Preferences} />
         </div>
-      </Router>
-    </React.Fragment>
+      </BrowserRouter>
+    </>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const Bibliography = () => (
-  <div class="Wrapper">
+  <div className="Wrapper">
     <h2>Bibliografia</h2>
 
     <p>Links </p>

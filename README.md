@@ -64,6 +64,7 @@ cd lar-remoto
     ```bash
     docker run --name mysql \
       -v "$(pwd)"/conf/mysql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql \
+      -v "$(pwd)"/conf/mysql/database:/var/lib/mysql \
       -e MYSQL_ROOT_PASSWORD=root_password  \
       -e MYSQL_DATABASE=guacamole_db        \
       -e MYSQL_USER=guacamole_user          \

@@ -8,7 +8,7 @@ export class Server extends React.Component {
     }, 1500);
     
     return(
-      <div class="Wrapper">
+      <div className="Wrapper">
         <h2>Redirecionando para autenticação do servidor...</h2>
         <div>Caso não seja redirecionado automaticamente, <a href={guacamole}>clique aqui</a></div>
       </div>

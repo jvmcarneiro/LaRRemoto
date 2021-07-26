@@ -29,4 +29,6 @@ yarn-error.log*
 /conf/nginx/*.key
 /conf/nginx/*.crt
 /conf/nginx/*.pem
+/conf/mysql/database
+/conf/mysql/database/*
 

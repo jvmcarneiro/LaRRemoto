@@ -6,6 +6,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import Collapse from "@material-ui/core/Collapse";
 import NaviLink from "../components/NaviLink";
+import { useLocation } from 'react-router-dom'
 
 function SidebarItem({ depthStep = 10, depth = 0, expanded, item, ...rest }) {
   const [collapsed, setCollapsed] = React.useState(true);
@@ -82,6 +83,7 @@ function SidebarItem({ depthStep = 10, depth = 0, expanded, item, ...rest }) {
 }
 
 function Sidebar({ items, depthStep, depth, expanded }) {
+  const location = useLocation();
   return (
     <div className="sidebar">
       <List disablePadding dense>
@@ -90,7 +92,7 @@ function Sidebar({ items, depthStep, depth, expanded }) {
             {sidebarItem === "divider" ? (
               <Divider style={{ margin: "6px 0" }} />
             ) : (
-                <NaviLink to={`${sidebarItem.path}`}>
+              <NaviLink to={`${sidebarItem.path === "" ? location.pathname : sidebarItem.path}`}>
                   <SidebarItem
                     depthStep={depthStep}
                     depth={depth}

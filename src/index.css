@@ -9,11 +9,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+select.form-control,
+textarea.form-control,
+input.form-control {
+  font-size: 1rem;
+}
+input[type=file] {
+  width: 100%;
+}
+
 .sidebar {
-  max-width: 240px;
+  max-width: 220px;
   height: 100vh;
   border: 1px solid rgba(0, 0, 0, 0.1);
   z-index:2;
+  border-top: 0px;
 }
 
 .sidebar-item {
