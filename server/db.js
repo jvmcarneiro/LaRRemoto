@@ -1,21 +1,31 @@
-async function connect() {
-    if (global.connection && global.connection.state !== 'disconnected')
-        return global.connection;
- 
-    const mysql = require("mysql");
-    const connection = await mysql.createConnection(`mysql://${process.env.MYSQL_USER}:${process.env.MYSQL_PASSWORD}@${process.env.MYSQL_HOST}:${process.env.MYSQL_PORT}/${process.env.MYSQL_DB}`);
-    console.log("Conectou no MySQL!");
-    global.connection = connection;
-    return connection;
+var connection;
+
+async function setConnection(con) {
+  connection = con;
 }
  
 async function findUser(username) {
-    const conn = await connect();
-    const entity = await conn.query(`SELECT * FROM guacamole_entity WHERE name=? LIMIT 1`, [username]);
+    if (!connection)
+        return null;
+    const entity = await connection.query(
+      `SELECT * FROM guacamole_entity WHERE name=? LIMIT 1`,
+      [username],
+      function (error, results, fields) {
+        if (error) throw error;
+        console.log('Nome de usuário não encontrado');
+      }
+    );
     if (entity.length === 0)
         return null;
     const entity_id = entity.entity_id;
-    const user = await conn.query(`SELECT * FROM guacamole_user WHERE entity_id=? LIMIT 1`, [entity_id]);
+    const user = await connection.query(
+      `SELECT * FROM guacamole_user WHERE entity_id=? LIMIT 1`,
+      [entity_id],
+      function (error, results, fields) {
+        if (error) throw error;
+        console.log('ID de entidade não é de usuário');
+      }
+    );
     if (user.length > 0)
         return user;
     else return null;
