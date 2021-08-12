@@ -56,7 +56,7 @@ cd lar-remoto
     docker run --name guacd \
       -v /home/mark1/Videos/guacamole:/record:rw \
       --restart always      \
-      -d guacamole/guac 
+      -d guacamole/guacd 
     ```
 
 3. Criar database MySQL (alterando senha de escolha):
