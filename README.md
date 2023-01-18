@@ -16,16 +16,19 @@ to be made available ideally only on private networks, since the product has not
 Site home page:
 ![Site home page.](screenshots/lar-inicio.jpg?raw=true "Site home page.")
 
-Exemplo de sessão remota dentro do navegador web:
-![Exemplo de sessão remota.](screenshots/guacamole-session.jpg?raw=true "Exemplo de sessão remota.")
+Example of a remote session within the web browser:
+![Example of a remote session.](screenshots/guacamole-session.jpg?raw=true "Example of a remote session.")
 
-## Pré-requisitos
+## Prerequisites
 
-Seguir os métodos de instalação recomendados para seu ambiente das seguintes
-ferramentas:
+Follow the recommended installation methods for the following
+tools on your specific environment:
 
 - Docker Engine
 - NPM
+
+All the following instructions assume execution from within the local copy of the repository.
+To clone and change directory:
 
 Todas as instruções abaixo supõem execução dentro de cópia local do repositório.
 Para clonar e mudar o diretório:
