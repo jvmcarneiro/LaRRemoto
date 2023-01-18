@@ -1,23 +1,20 @@
-# lar-remoto
+# remote-lar
 
-Projeto do website para acesso aos conteúdos e ferramentas do Laboratório de
-Robótica (LaR) da Escola Politécnica da UFBA.
+Project for a website that provides remote access to the contents and tools present at the Robotics Lab (LaR) of the UFBA.
 
-Este repositório contém o código fonte do site a ser hospedado em um servidor
-do laboratório, com o acesso dos estudantes e pesquisadores aos arquivos e
-programas locais do LaR feito remotamente por VNC, via Apache Guacamole,
-diretamente pelo website.
+This repository contains the source code of a website-based tool to be hosted on a server
+in the laboratory, providing access for students and researchers to remote archives and
+tools via the Apache Guacamole framework with VNC.
 
-Manuais de utilização das soluções desenvolvidas no repositório estão presentes
-na pasta `manual/`.
+User manuals for the tools provided in the project are present
+in the `manual/` folder.
 
-Abaixo estão as instruções de instalação básica para criação do site e servidor
-Guacamole a serem rodados apenas localmente, sem grandes requisitos de
-segurança. As instruções foram desenvolvidas com Ubuntu Linux em mente.
+Following are the basic installation instructions for configuring and deploying the website and Guacamole server
+to be made available ideally only on private networks, since the product has not been tested nor prepared for public network use. The instructions were developed taking Ubuntu Linux systems into consideration.
 
 ## Screenshots 
-Tela inicial do site:
-![Tela Inicial do site.](screenshots/lar-inicio.jpg?raw=true "Tela Inicial do site.")
+Site home page:
+![Site home page.](screenshots/lar-inicio.jpg?raw=true "Site home page.")
 
 Exemplo de sessão remota dentro do navegador web:
 ![Exemplo de sessão remota.](screenshots/guacamole-session.jpg?raw=true "Exemplo de sessão remota.")
