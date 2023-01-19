@@ -1,6 +1,6 @@
 # lar-remoto
 
-Project for a website that provides remote access to the contents and tools present at the Robotics Lab (LaR) of the UFBA.
+Project for a web page that provides remote access to the contents and tools present at the Robotics Lab (LaR) of the UFBA.
 
 This repository contains the source code of a website-based tool to be hosted on a server
 in the laboratory, providing access for students and researchers to remote archives and
