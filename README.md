@@ -13,15 +13,15 @@ Following are the basic installation instructions for configuring and deploying 
 to be made available ideally only on private networks, since the product has not been tested nor prepared for public network use. The instructions were developed taking Ubuntu Linux systems into consideration.
 
 ## Screenshots 
-Site home page:
-![Site home page.](screenshots/lar-inicio.jpg?raw=true "Site home page.")
+Website home page:
+![Website home page.](screenshots/lar-inicio.jpg?raw=true "Website home page.")
 
 Example of a remote session within the web browser:
 ![Example of a remote session.](screenshots/guacamole-session.jpg?raw=true "Example of a remote session.")
 
 ## Prerequisites
 
-Follow the recommended installation methods for the following
+Follow the recommended installation methods for these
 tools on your specific environment:
 
 - Docker Engine
@@ -30,27 +30,24 @@ tools on your specific environment:
 All the following instructions assume execution from within the local copy of the repository.
 To clone and change directory:
 
-Todas as instruções abaixo supõem execução dentro de cópia local do repositório.
-Para clonar e mudar o diretório:
-
 ```bash
 git clone https://github.com/jvmcarneiro/lar-remoto
 cd lar-remoto
 ```
 
-## Instalação do Servidor Guacamole
+## Guacamole server installation
 
-É possível alterar as configurações do Guacamole nos arquivos da pastas `conf/`
-(habilitar SSL, por exemplo) e do site na pasta `src/`.
+It is possible to change Guacamole's settings through files in the `conf/` folder
+(in order to enable SSL, for example) and also the website settings in the `src/` folder.
 
-1. Prototipar site com:
+1. Prototype website with:
 
     ```bash
     npm install
     npm run build
     ```
 
-2. Iniciar guacd daemon:
+2. Start guacd daemon:
 
     ```bash
     docker run --name guacd \
@@ -59,7 +56,7 @@ cd lar-remoto
       -d guacamole/guacd 
     ```
 
-3. Criar database MySQL (alterando senha de escolha):
+3. Create MySQL database (picking password of choice):
 
     ```bash
     docker run --name mysql \
@@ -73,10 +70,10 @@ cd lar-remoto
       -d -p 3306:3306 mysql
     ```
 
-4. Modificar o valor do campo `server_name` no arquivo
-   `conf/nginx/nginx.conf` com o endereço do servidor de acesso.
+4. Modify the value of the field `server_name` with the access server address, in the
+   `conf/nginx/nginx.conf` file.
 
-5. Iniciar Nginx com config local:
+5. Start Nginx with the local config files:
 
     ```bash
     docker run --name nginx \
@@ -85,13 +82,13 @@ cd lar-remoto
         --restart always    \
         -d -p 80:80 nginx
     ```
-
-6. Caso deseje, alterar configurações padrão do guacamole e mysql via arquivo
-   `conf/guacamole/guacamole.properties` segundo [Capítulos 5 e 6 do Guacamole
+    
+6. If desired, change the default Guacamole and MySQL settings via the
+   `conf/guacamole/guacamole.properties` file, according to [Chapters 5 and 6 of the Guacamole
    Manual](http://guacamole.incubator.apache.org/doc/gug/index.html).
 
-7. Iniciar container do servidor Guacamole (usando mesma senha usada na criação
-   da database):
+7. Start the Guacamole server container (using the same password inserted during the creation
+   of the database):
 
     ```bash
     docker run --name guacamole \
@@ -106,56 +103,55 @@ cd lar-remoto
       --restart always                     \
       -d guacamole/guacamole
     ```
-
-8. Habilitar serviços Docker (podem já estar habilitados por padrão):
+    
+8. Enable Docker services (may already be enabled by default):
 
     ```bash
     sudo systemctl enable docker.service
     sudo systemctl enable containerd.service
     ```
 
-9. Mudar a senha padrão no Guacamole a partir do endereço definido no passo 3.
+9. Change the default password in the Guacamole Settings page using the web address defined in step 3.
 
+## Installation and configuration of the VNC server
 
-## Instalação e configuração do servidor VNC
-
-Seguindo as recomendações na seção _Which VNC server?_ do [Capítulo 5 do
+Following the recommendations from the _Which VNC server?_ section of [Chapter 5 of the
 Guacamole Manual](https://guacamole.apache.org/doc/gug/configuring-guacamole.html),
-escolha um servidor compatível com seu ambiente. Optamos pelo TigerVNC no
-Ubuntu 16.04 utilizando as referências [Install tigervnc on
-Ubuntu](https://gist.github.com/plembo/87a429f3bd1f95d4ec59b2ce8ce0a04d) e
-[TigerVNC - Arch Wiki](https://wiki.archlinux.org/index.php/TigerVNC) com
-conexão feita por Xvnc e XDMCP através dos seguintes passos:
+choose a server compatible with your environment. We opted for TigerVNC on
+Ubuntu 16.04 using [Install tigervnc on
+Ubuntu](https://gist.github.com/plembo/87a429f3bd1f95d4ec59b2ce8ce0a04d) and
+[TigerVNC - Arch Wiki](https://wiki.archlinux.org/index.php/TigerVNC) as references, setting the connection
+to use Xvnc and XDMCP through the following steps:
 
-1. Baixar os binários TigerVNC pela [release
-   page](https://github.com/TigerVNC/tigervnc/releases) e extrair arquivos com:
+1. Download the TigerVNC binaries from the [release
+   page](https://github.com/TigerVNC/tigervnc/releases) and extract files with:
 
     ```bash
     tar xzf tigervnc-*.tar.gz
     ```
 
-2. Alterar permissões:
+2. Change permissions:
 
     ```bash
     cd tigervnc-*
     sudo chown -R root:root usr
     ```
 
-3. Copiar binários para as pastas do sistema:
+3. Copy binaries to system folders:
 
     ```bash
     sudo tar czf usr.tgz usr
     sudo tar xzkf usr.tgz -C /
     ```
-
-4. Instalar o ambiente gráfico de escolha (optamos por XFCE, instalando com
+    
+4. Install the desktop environment of choice (we opted for XFCE, installing with
    `sudo apt install xfce4 xfce4-goodies`).
 
-5. Criar e configurar usuários linux, com ferramentas e permissões desejadas, para
-   serem acessadas remotamente.
+5. Create and configure linux users, with the desired tools and permissions, to
+   be accessed remotely.
 
-6. Habilitar XDMCP incluindo as linhas abaixo no arquivo de configuração do
-   display manager de seu sistema (por padrão `/etc/lightdm/lightdm.conf` no
+6. Enable XDMCP by including the following lines to the config file
+   of your system's display manager (by default `/etc/lightdm/lightdm.conf` in
    Ubuntu):
 
     ```bash
@@ -164,21 +160,21 @@ conexão feita por Xvnc e XDMCP através dos seguintes passos:
     port=177
     ```
 
-   E caso o servidor seja headless (sem interface gráfica) incluir também:
+   And if the server is headless (without a graphical interface), also include:
 
     ```bash
     [LightDM]
     start-default-seat=false
     ```
 
-7. Reiniciar o display manager para carregar as novas configurações. No Ubuntu
-   com LightDM:
+7. Restart the display manager to load the new settings. On Ubuntu
+   with LightDM:
 
     ```bash
     sudo service lightdm restart
     ```
 
-8. Criar o arquivo `/etc/systemd/system/xvnc.socket` com o conteúdo:
+8. Create the `/etc/systemd/system/xvnc.socket` file with the following contents:
 
     ```bash
     [Unit]
@@ -191,8 +187,8 @@ conexão feita por Xvnc e XDMCP através dos seguintes passos:
     [Install]
     WantedBy=sockets.target
     ```
-
-9. Criar também `/etc/systemd/system/xvnc@.service` com:
+    
+9. Also create `/etc/systemd/system/xvnc@.service` containing:
 
     ```bash
     [Unit]
@@ -204,42 +200,31 @@ conexão feita por Xvnc e XDMCP através dos seguintes passos:
     StandardInput=socket
     StandardError=syslog
     ```
-
-10. Iniciar e habilitar o servidor VNC com:
+    
+10. Start and enable the VNC server with:
 
     ```bash
     sudo systemctl start xvnc.socket
     sudo systemctl enable xvnc.socket
     ```
 
-11. Criar conexões e usuários do Guacamole via *[ENDEREÇO DO
-    SITE]/guacamole/* implementado anteriormente. Para configuração mínima
-    de conexão, basta preencher os campos _Hostname_ (endereço de onde o
-    servidor VNC está hospedado) e porta (5900 é a porta padrão VNC,
-    configurada no passo 8).
+11. Create Guacamole connections and users via *[WEB ADDRESS]/guacamole/* implemented earlier. For a minimal configuration
+    connection, just fill in the _Hostname_ fields (address where the
+    VNC server is hosted) and port (5900 is the default VNC port,
+    configured in step 8).
+    
 
-## Solução de problemas
+## Troubleshooting
 
-Erros ao tentar acessar a tela de login do Guacamole podem ocorrer caso os IPs
-dos containers Docker estejam errados nos arquivos de configuração.  Os
-arquivos `conf/nginx/nginx.conf` e `conf/tomcat/server.xml` assumem os IPs dos
-containers `guacamole` e `nginx`, respectivamente, de acordo com a ordem em que cada um é iniciado. Caso esteja havendo algum conflito,
-basta alterar os IPs nesses arquivos e reiniciar os containers.
+Errors while trying to access the Guacamole login screen can occur if the IPs
+of the Docker containers do not match the ones in the project's configuration files. The
+`conf/nginx/nginx.conf` and `conf/tomcat/server.xml` files assume the IP addresses of the
+`guacamole` and `nginx` containers, respectively, according to the order in which they start. If there is a conflict,
+try checking and changing the IPs in these files and then restarting the containers.
 
-Para averiguar os devidos IPs basta rodar o comando abaixo, substituindo o
-container desejado ao final:
+To check the proper IP addressses just run the following command, replacing the
+desired container at the end:
 
 ```bash
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nginx
 ```
-
-## Marcos do projeto
-
-- [x] Refazer README
-- [x] Configurar servidor proxy reverso
-- [x] Alterar configurações padrão Guacamole
-- [x] Consertar vulnerabilidades nas dependências do projeto
-- [x] Remover oauth (autenticar somente pelo Guacamole)
-- [x] Criar link para a página de login do Guacamole
-- [x] Incluir configuração do servidor VNC
-- [x] Testar e incluir instruções para VNC por XDMCP
