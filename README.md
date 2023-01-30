@@ -12,6 +12,10 @@ in the `manual/` folder.
 Following are the basic installation instructions for configuring and deploying the website and Guacamole server
 to be made available ideally only on private networks, since the product has not been tested nor prepared for public network use. The instructions were developed taking Ubuntu Linux systems into consideration.
 
+## Related repositories
+- Virtual GUI for FPGA control: <https://github.com/jvmcarneiro/de2-115-virtual-input>
+- Remote desktop configuration: <https://github.com/jvmcarneiro/largrad-setup>
+
 ## Screenshots 
 Website home page:
 ![Website home page.](screenshots/lar-inicio.jpg?raw=true "Website home page.")
